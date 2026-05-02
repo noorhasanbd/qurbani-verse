@@ -9,7 +9,7 @@
     "age": 2.5,
     "location": "Pabna",
     "description": "Healthy Deshi cow, well-fed and active.",
-    "image": "public/images/cow1.jpg",
+    "image": "/images/cow1.jpg",
     "category": "Cow"
   },
   {
@@ -22,7 +22,7 @@
     "age": 3.0,
     "location": "Sirajganj",
     "description": "Large Shahiwal breed, perfect for Qurbani.",
-    "image": "public/images/cow2.jpg",
+    "image": "/images/cow2.jpg",
     "category": "Cow"
   },
   {
@@ -35,7 +35,7 @@
     "age": 2.0,
     "location": "Kushtia",
     "description": "Strong and energetic bull.",
-    "image": "public/images/cow3.jpg",
+    "image": "/images/cow3.jpg",
     "category": "Cow"
   },
   {
@@ -48,7 +48,7 @@
     "age": 3.5,
     "location": "Dhaka",
     "description": "High weight Friesian cross breed.",
-    "image": "public/images/cow4.jpg",
+    "image": "/images/cow4.jpg",
     "category": "Cow"
   },
   {
@@ -61,7 +61,7 @@
     "age": 2.8,
     "location": "Rangpur",
     "description": "Glossy black coat, very healthy.",
-    "image": "public/images/cow5.jpg",
+    "image": "/images/cow5.jpg",
     "category": "Cow"
   },
   {
@@ -74,7 +74,7 @@
     "age": 3.0,
     "location": "Rajshahi",
     "description": "Beautiful Gir breed cow.",
-    "image": "public/images/cow6.jpg",
+    "image": "/images/cow6.jpg",
     "category": "Cow"
   },
   {
@@ -87,7 +87,7 @@
     "age": 2.2,
     "location": "Bogra",
     "description": "Traditional red Deshi bull.",
-    "image": "public/images/cow7.jpg",
+    "image": "/images/cow7.jpg",
     "category": "Cow"
   },
   {
@@ -100,7 +100,7 @@
     "age": 4.0,
     "location": "Munshiganj",
     "description": "Massive Holstein breed, excellent health.",
-    "image": "public/images/cow8.jpg",
+    "image": "/images/cow8.jpg",
     "category": "Cow"
   },
   {
@@ -113,7 +113,7 @@
     "age": 3.0,
     "location": "Dinajpur",
     "description": "Powerful and calm temperament.",
-    "image": "public/images/cow9.jpg",
+    "image": "/images/cow9.jpg",
     "category": "Cow"
   },
   {
@@ -126,7 +126,7 @@
     "age": 3.2,
     "location": "Jessore",
     "description": "Premium Shahiwal cross bull.",
-    "image": "public/images/cow10.jpg",
+    "image": "/images/cow10.jpg",
     "category": "Cow"
   },
   {
@@ -139,7 +139,7 @@
     "age": 1.5,
     "location": "Chuadanga",
     "description": "Authentic Black Bengal goat.",
-    "image": "public/images/goat1.jpg",
+    "image": "/images/goat1.jpg",
     "category": "Goat"
   },
   {
@@ -152,7 +152,7 @@
     "age": 2.0,
     "location": "Mymensingh",
     "description": "Tall Jamunapari breed, very active.",
-    "image": "public/images/goat2.jpg",
+    "image": "/images/goat2.jpg",
     "category": "Goat"
   },
   {
@@ -165,7 +165,7 @@
     "age": 1.2,
     "location": "Comilla",
     "description": "Local village goat, easy to manage.",
-    "image": "public/images/goat3.jpg",
+    "image": "/images/goat3.jpg",
     "category": "Goat"
   },
   {
@@ -178,7 +178,7 @@
     "age": 1.8,
     "location": "Meherpur",
     "description": "Healthy meat-purpose goat.",
-    "image": "public/images/goat4.jpg",
+    "image": "/images/goat4.jpg",
     "category": "Goat"
   },
   {
@@ -191,7 +191,7 @@
     "age": 2.5,
     "location": "Narsingdi",
     "description": "Large Beetal breed, premium quality.",
-    "image": "public/images/goat5.jpg",
+    "image": "/images/goat5.jpg",
     "category": "Goat"
   }
 ]
