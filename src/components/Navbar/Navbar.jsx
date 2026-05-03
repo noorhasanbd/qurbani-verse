@@ -38,7 +38,10 @@ const Navbar = () => {
             {navLinks.map((l,i)=><NavLink key={i} navItem={l}/>)}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl text-green-600">QurbaniVerse</a>
+        <a className="text-xl bg-slate-800 p-2 rounded-xl"><h2 className="text-2xl font-bold text-white tracking-tight">
+              Qurbani<span className="text-green-500">Verse</span>
+            </h2>
+          </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
