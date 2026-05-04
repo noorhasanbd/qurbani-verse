@@ -1,16 +1,63 @@
 "use client";
-import React from "react";
+
+import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Bounce, toast } from "react-toastify";
+
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const RegisterPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const handleRegistrationFunc = (data) => {
+  const handleRegistrationFunc = async (data) => {
     console.log("Form Data:", data);
+
+    const { email, name, photoUrl, password } = data;
+
+    const { data: res, error } = await authClient.signUp.email({
+      name: name,
+      email: email,
+      password: password,
+      image: photoUrl,
+      callbackURL: "/",
+    });
+    if (error) {
+      toast.error(error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+    if (res) {
+      toast.success("User Created Successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      router.push("/");
+    }
+    console.log(error, "Error");
   };
 
   return (
@@ -73,26 +120,67 @@ const RegisterPage = () => {
                 </label>
               )}
             </div>
-
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Password</span>
+                <span className="label-text font-semibold">Photo URL</span>
               </label>
               <input
-                type="password"
-                placeholder="••••••••"
-                className={`input input-bordered w-full focus:outline-green-500 transition-all ${errors.password ? "input-error" : ""}`}
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: { value: 6, message: "Minimum 6 characters" },
+                type="text"
+                placeholder="Photo Url"
+                className={`input input-bordered w-full focus:outline-green-500 transition-all ${errors.photo ? "input-error" : ""}`}
+                {...register("photoUrl", {
+                  required: "Photo URL is required",
                 })}
               />
-              {errors.password && (
+              {errors.photo && (
                 <label className="label">
                   <span className="label-text-alt text-error">
-                    {errors.password.message}
+                    {errors.photo.message}
                   </span>
                 </label>
+              )}
+            </div>
+
+            <div className="form-control w-full">
+              <div className="relative">
+                <label className="label flex justify-between">
+                  <span className="label-text font-medium text-slate-700">
+                    Password
+                  </span>
+
+                  <Link
+                    href="#"
+                    className="label-text-alt text-green-600 hover:underline font-medium"
+                  >
+                    Forgot?
+                  </Link>
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"} //
+                  placeholder="••••••••"
+                  className={`input input-bordered w-full focus:outline-green-500 transition-all ${
+                    errors.password ? "input-error" : "border-slate-200"
+                  }`}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                />
+
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute -left-2 top-1/2 text-slate-500 hover:text-green-600 transition-colors z-10"
+                >
+                  {!showPassword ? (
+                    <FaEye size={20} />
+                  ) : (
+                    <FaEyeSlash size={20} />
+                  )}
+                </span>
+              </div>
+              {errors.password && (
+                <span className="text-xs text-red-500 mt-1 ml-1">
+                  {errors.password.message}
+                </span>
               )}
             </div>
 
