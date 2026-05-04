@@ -4,17 +4,21 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  if (session) {
+    redirect("/");
+  }
 
   const handleLoginFunc = async (data) => {
     // console.log("Login Attempt:", data);

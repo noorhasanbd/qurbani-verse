@@ -2,15 +2,16 @@
 
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
 
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   const {
     register,
@@ -18,6 +19,14 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm();
 
+  if (session) {
+        redirect("/");
+    }
+  const handleGoogleSignin = async () => {
+     const data = await authClient.signIn.social({
+        provider: "google",
+      });
+  };
   const handleRegistrationFunc = async (data) => {
     console.log("Form Data:", data);
 
@@ -43,6 +52,7 @@ const RegisterPage = () => {
         transition: Bounce,
       });
     }
+
     if (res) {
       toast.success("User Created Successfully", {
         position: "top-right",
@@ -198,13 +208,21 @@ const RegisterPage = () => {
 
           <p className="text-center text-sm">
             Already have an account?{" "}
-            <a
+            <Link
               href="/login"
               className="link text-green-600 font-bold no-underline hover:underline"
             >
               Log In
-            </a>
+            </Link>
           </p>
+          <button
+           
+            className="btn bg-green-600 text-white font-bold no-underline hover:underline"
+            onClick={handleGoogleSignin}
+          >
+            <FaGoogle />
+            Continue with Google
+          </button>
         </div>
       </div>
     </div>

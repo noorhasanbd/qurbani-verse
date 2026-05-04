@@ -89,7 +89,7 @@ const Navbar = () => {
                   await authClient.signOut({
                     fetchOptions: {
                       onSuccess: () => {
-                        toast.success("Login Successful", {
+                        toast.success("Logout Successful", {
                           position: "top-right",
                           autoClose: 2000,
                           hideProgressBar: false,

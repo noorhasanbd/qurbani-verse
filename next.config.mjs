@@ -6,9 +6,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "c8.alamy.com",
+        hostname: "**",
         port: "",
-        pathname: "/**",
       },
     ],
   },

@@ -2,6 +2,7 @@ import React from "react";
 import data from "@/lib/data/data.json";
 import Image from "next/image";
 import Link from "next/link";
+import BuyNowSection from "@/components/BuyNowSection";
 
 const AnimalDetails = async ({ params }) => {
   const { id } = await params;
@@ -16,7 +17,7 @@ const AnimalDetails = async ({ params }) => {
   }
 
   return (
-    <div className="min-h-screen bg-white py-12 h-screen">
+    <div className="min-h-screen bg-white py-12 min-h-screen">
       <div className="container mx-auto px-6">
         <Link
           href="/all-animals"
@@ -31,8 +32,7 @@ const AnimalDetails = async ({ params }) => {
               src={animal.image}
               alt={animal.name}
               fill
-              priority
-              className="object-cover hover:scale-110 transition-transform duration-700"
+              className="object-fill object-top hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute top-4 left-4 bg-white px-3 py-1 text-xs font-bold tracking-widest uppercase shadow-sm">
               Featured Item
@@ -78,9 +78,7 @@ const AnimalDetails = async ({ params }) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <button className="btn btn-outline border-slate-800 rounded-none h-14 hover:bg-green-500 hover:border-none hover:text-white">
-                BUY IT NOW
-              </button>
+              <BuyNowSection />
             </div>
 
             <div className="mt-10 border-t border-slate-100">
