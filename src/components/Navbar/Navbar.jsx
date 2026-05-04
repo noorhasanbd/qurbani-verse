@@ -83,6 +83,13 @@ const Navbar = () => {
                 ></Image>
               </Link>
               <Link
+                href="/profile"
+                className="btn bg-green-600 text-white"
+                
+              >
+                Edit Profile
+              </Link>
+              <Link
                 href="/"
                 className="btn bg-green-600 text-white"
                 onClick={async () =>

@@ -3,8 +3,19 @@ import data from "@/lib/data/data.json";
 import Image from "next/image";
 import Link from "next/link";
 import BuyNowSection from "@/components/BuyNowSection";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 const AnimalDetails = async ({ params }) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/login");
+  }
+
   const { id } = await params;
   const animal = data.find((item) => item.id.toString() === id);
 
@@ -17,7 +28,7 @@ const AnimalDetails = async ({ params }) => {
   }
 
   return (
-    <div className="min-h-screen bg-white py-12 min-h-screen">
+    <div className="min-h-screen bg-white py-12">
       <div className="container mx-auto px-6">
         <Link
           href="/all-animals"
@@ -32,7 +43,8 @@ const AnimalDetails = async ({ params }) => {
               src={animal.image}
               alt={animal.name}
               fill
-              className="object-fill object-top hover:scale-110 transition-transform duration-700"
+              priority
+              className="object-cover hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute top-4 left-4 bg-white px-3 py-1 text-xs font-bold tracking-widest uppercase shadow-sm">
               Featured Item
@@ -63,7 +75,7 @@ const AnimalDetails = async ({ params }) => {
             <div className="space-y-6 mb-10">
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2 text-sm">
-                  {animal.price > "50000" && (
+                  {animal.price > 50000 && (
                     <div className="flex items-center gap-2 text-[10px] font-bold text-green-600 uppercase tracking-wide mt-2">
                       <span>🚚</span>
                       <span>Free Shipping Available</span>
