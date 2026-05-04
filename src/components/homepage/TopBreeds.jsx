@@ -1,40 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { Zap, ArrowRight } from "lucide-react";
 import { useSpring, animated, useInView, config } from "@react-spring/web";
 
 const TopBreed = ({ data }) => {
-  const [breed, setBreed] = useState(null);
-  const [isClient, setIsClient] = useState(false);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      console.error("No data received in TopBreed component");
-      setError(true);
-      return;
-    }
-
-    const selectedBreed = data[0];
-
-    if (!selectedBreed?.image || !selectedBreed?.name) {
-      console.error("Selected breed is missing required fields");
-      setError(true);
-      return;
-    }
-
-    setBreed(selectedBreed);
-  }, [data]);
-
   const [ref, inView] = useInView({
     rootMargin: "-15% 0%",
     once: true,
   });
 
+  // 1. Immediate Data Validation
+  // We handle the "Error" state directly during render
+  const breed = data?.[0];
+  const hasError = !breed || !breed.image || !breed.name;
+
+  // 2. Define Animations
   const headerSpring = useSpring({
     to: { opacity: inView ? 1 : 0, y: inView ? 0 : -20 },
     config: config.gentle,
@@ -51,37 +33,23 @@ const TopBreed = ({ data }) => {
     config: config.slow,
   });
 
-  if (!isClient || (!breed && !error)) {
-    return (
-      <section className="py-16 bg-white min-h-[600px] flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-500">Loading Top Breed...</p>
-        </div>
-      </section>
-    );
-  }
-
-  if (error || !breed) {
+  // 3. Conditional Rendering (Error State)
+  if (hasError) {
     return (
       <section className="py-16 bg-white min-h-[600px] flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-2">⚠️ Failed to load top breed</p>
-          <p className="text-slate-600 text-sm">
-            Please check your data.json file
-          </p>
+          <p className="text-slate-600 text-sm">Please check your data source</p>
         </div>
       </section>
     );
   }
 
+  // 4. Main Render
   return (
     <section ref={ref} className="py-16 bg-white overflow-hidden min-h-[600px]">
       <div className="container mx-auto px-4">
-        <animated.div
-          style={headerSpring}
-          className="flex items-center gap-4 mb-12"
-        >
+        <animated.div style={headerSpring} className="flex items-center gap-4 mb-12">
           <div className="h-px bg-slate-900 flex-grow"></div>
           <h2 className="text-4xl font-black italic uppercase tracking-tighter text-slate-900">
             Top<span className="text-green-600">Breed</span>
@@ -122,27 +90,12 @@ const TopBreed = ({ data }) => {
 
             <p className="text-slate-600 leading-relaxed mb-8 text-lg">
               {breed.description} Currently located in{" "}
-              <span className="font-bold text-slate-800">{breed.location}</span>
-              .
+              <span className="font-bold text-slate-800">{breed.location}</span>.
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-10">
-              <div className="flex flex-col p-3 bg-white border border-slate-200 shadow-sm">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                  Weight
-                </span>
-                <span className="text-lg font-black text-slate-800">
-                  {breed.weight} KG
-                </span>
-              </div>
-              <div className="flex flex-col p-3 bg-white border border-slate-200 shadow-sm">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                  Age
-                </span>
-                <span className="text-lg font-black text-slate-800">
-                  {breed.age} Years
-                </span>
-              </div>
+              <StatBox label="Weight" value={`${breed.weight} KG`} />
+              <StatBox label="Age" value={`${breed.age} Years`} />
             </div>
 
             <div className="flex items-center justify-between border-t-2 border-slate-900 pt-8 mt-auto">
@@ -157,10 +110,7 @@ const TopBreed = ({ data }) => {
 
               <button className="group flex items-center gap-3 bg-slate-900 text-white px-8 py-4 font-bold hover:bg-green-600 transition-colors">
                 VIEW DETAILS
-                <ArrowRight
-                  size={20}
-                  className="group-hover:translate-x-2 transition-transform"
-                />
+                <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
               </button>
             </div>
           </animated.div>
@@ -169,5 +119,15 @@ const TopBreed = ({ data }) => {
     </section>
   );
 };
+
+// Helper Component to keep the main render clean
+const StatBox = ({ label, value }) => (
+  <div className="flex flex-col p-3 bg-white border border-slate-200 shadow-sm">
+    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+      {label}
+    </span>
+    <span className="text-lg font-black text-slate-800">{value}</span>
+  </div>
+);
 
 export default TopBreed;

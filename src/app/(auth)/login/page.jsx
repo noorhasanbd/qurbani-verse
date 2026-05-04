@@ -5,9 +5,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
 import { redirect, useRouter } from "next/navigation";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 
 const LoginPage = () => {
+  const handleGoogleSignin = async () => {
+       const data = await authClient.signIn.social({
+          provider: "google",
+        });
+    };
   const [showPassword, setShowPassword] = useState(false);
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
@@ -163,6 +168,15 @@ const LoginPage = () => {
                 >
                   Register
                 </Link>
+
+                <button
+                           
+                            className="btn bg-green-600 text-white font-bold no-underline hover:underline"
+                            onClick={handleGoogleSignin}
+                          >
+                            <FaGoogle />
+                            Continue with Google
+                          </button>
               </p>
             </div>
           </form>
