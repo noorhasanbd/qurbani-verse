@@ -82,39 +82,33 @@ const Navbar = () => {
                   className="rounded-full object-cover aspect-square w-full h-full "
                 ></Image>
               </Link>
-              <Link
-                href="/profile"
-                className="btn bg-green-600 text-white"
-                
-              >
+              <Link href="/profile" className="btn bg-green-600 text-white">
                 Edit Profile
               </Link>
-              <Link
-                href="/"
+              <button
                 className="btn bg-green-600 text-white"
-                onClick={async () =>
+                onClick={async () => {
                   await authClient.signOut({
                     fetchOptions: {
                       onSuccess: () => {
                         toast.success("Logout Successful", {
                           position: "top-right",
                           autoClose: 2000,
-                          hideProgressBar: false,
-                          closeOnClick: false,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
                           theme: "dark",
-                          transition: Bounce,
                         });
+                        // Perform navigation ONLY after the logout is confirmed
                         router.push("/");
+                        router.refresh(); // Crucial to update the UI state
+                      },
+                      onError: (ctx) => {
+                        toast.error(ctx.error.message || "Logout failed");
                       },
                     },
-                  })
-                }
+                  });
+                }}
               >
                 Logout
-              </Link>
+              </button>
             </>
           ) : (
             <Link href="/login" className="btn bg-green-600 text-white">

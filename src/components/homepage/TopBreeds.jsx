@@ -11,12 +11,11 @@ const TopBreed = ({ data }) => {
     once: true,
   });
 
-  // 1. Immediate Data Validation
-  // We handle the "Error" state directly during render
+  
   const breed = data?.[0];
   const hasError = !breed || !breed.image || !breed.name;
 
-  // 2. Define Animations
+
   const headerSpring = useSpring({
     to: { opacity: inView ? 1 : 0, y: inView ? 0 : -20 },
     config: config.gentle,
@@ -33,7 +32,7 @@ const TopBreed = ({ data }) => {
     config: config.slow,
   });
 
-  // 3. Conditional Rendering (Error State)
+  
   if (hasError) {
     return (
       <section className="py-16 bg-white min-h-[600px] flex items-center justify-center">
@@ -45,7 +44,7 @@ const TopBreed = ({ data }) => {
     );
   }
 
-  // 4. Main Render
+
   return (
     <section ref={ref} className="py-16 bg-white overflow-hidden min-h-[600px]">
       <div className="container mx-auto px-4">
@@ -120,7 +119,7 @@ const TopBreed = ({ data }) => {
   );
 };
 
-// Helper Component to keep the main render clean
+
 const StatBox = ({ label, value }) => (
   <div className="flex flex-col p-3 bg-white border border-slate-200 shadow-sm">
     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
