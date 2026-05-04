@@ -8,178 +8,142 @@ import { redirect, useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 
 const LoginPage = () => {
-  const handleGoogleSignin = async () => {
-       const data = await authClient.signIn.social({
-          provider: "google",
-        });
-    };
   const [showPassword, setShowPassword] = useState(false);
-  const { data: session, isPending } = authClient.useSession();
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = authClient.useSession();
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   if (session) {
     redirect("/");
   }
 
-  const handleLoginFunc = async (data) => {
-    // console.log("Login Attempt:", data);
+  const handleGoogleSignin = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+  };
 
+  const handleLoginFunc = async (data) => {
+    setIsLoading(true);
     const { data: res, error } = await authClient.signIn.email({
-      email: data.email, // required
-      password: data.password, // required
+      email: data.email,
+      password: data.password,
       rememberMe: true,
     });
+
+    setIsLoading(false);
+
     if (error) {
-      toast.error(error.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+      toast.error(error.message, { theme: "dark", transition: Bounce });
     }
     if (res) {
-      toast.success("Login Successful", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+      toast.success("Login Successful", { theme: "dark", transition: Bounce });
       router.push("/");
       router.refresh();
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      {/* Main Card */}
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-        {/* Header Section */}
-        <div className="bg-green-500 p-8 text-center">
-          <h2 className="text-3xl font-bold text-white">Welcome Back</h2>
-          <p className="text-green-50 mt-2">
-            Please enter your details to login
-          </p>
+        {/* Header */}
+        <div className="bg-green-600 p-8 text-center text-white">
+          <h2 className="text-3xl font-bold">Welcome Back</h2>
+          <p className="text-green-100 mt-2">Login to manage your account</p>
         </div>
 
-        {/* Form Section */}
         <div className="p-8">
-          <form onSubmit={handleSubmit(handleLoginFunc)} className="space-y-5">
-            {/* Email Input */}
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text font-medium text-slate-700">
-                  Email Address
-                </span>
+          {/* Social Login */}
+          <button
+            type="button"
+            onClick={handleGoogleSignin}
+            className="w-full flex items-center justify-center gap-3 bg-white border border-slate-300 py-3 rounded-lg font-semibold text-slate-700 hover:bg-slate-50 transition-all shadow-sm mb-6"
+          >
+            <FaGoogle className="text-red-500" />
+            Continue with Google
+          </button>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-slate-500 uppercase tracking-wider">
+                Or email login
+              </span>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit(handleLoginFunc)} className="space-y-4">
+            {/* Email */}
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-700 ml-1">
+                Email Address
               </label>
               <input
                 type="email"
-                placeholder="hello@example.com"
-                className={`input input-bordered w-full focus:outline-green-500 transition-all ${
-                  errors.email ? "input-error" : "border-slate-200"
+                placeholder="name@company.com"
+                className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
+                  errors.email ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-green-500 focus:ring-2 focus:ring-green-200"
                 }`}
                 {...register("email", {
                   required: "Email is required",
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: "Invalid email format",
-                  },
+                  pattern: { value: /^\S+@\S+$/i, message: "Invalid format" },
                 })}
               />
-              {errors.email && (
-                <span className="text-xs text-red-500 mt-1 ml-1">
-                  {errors.email.message}
-                </span>
-              )}
+              {errors.email && <p className="text-xs text-red-500 ml-1">{errors.email.message}</p>}
             </div>
 
-            {/* Password Input */}
-            <div className="form-control w-full">
-              <div className="relative">
-                <label className="label flex justify-between">
-                  <span className="label-text font-medium text-slate-700">
-                    Password
-                  </span>
-
-                  <Link
-                    href="#"
-                    className="label-text-alt text-green-600 hover:underline font-medium"
-                  >
-                    Forgot?
-                  </Link>
-                </label>
-                <input
-                  type={showPassword ? "text" : "password"} //
-                  placeholder="••••••••"
-                  className={`input input-bordered w-full focus:outline-green-500 transition-all ${
-                    errors.password ? "input-error" : "border-slate-200"
-                  }`}
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
-                />
-
-                <span
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute -left-2 top-1/2 text-slate-500 hover:text-green-600 transition-colors z-10"
-                >
-                  {!showPassword ? (
-                    <FaEye size={20} />
-                  ) : (
-                    <FaEyeSlash size={20} />
-                  )}
-                </span>
-              </div>
-              {errors.password && (
-                <span className="text-xs text-red-500 mt-1 ml-1">
-                  {errors.password.message}
-                </span>
-              )}
-            </div>
-
-            {/* Login Button */}
-            <button
-              type="submit"
-              className="btn bg-green-500 hover:bg-green-600 border-none w-full text-white text-lg font-semibold shadow-md shadow-green-200 mt-4 normal-case"
-            >
-              Login
-            </button>
-
-            {/* Footer Link */}
-            <div className="text-center mt-6">
-              <p className="text-slate-600">
-                Don't have an account?{" "}
-                <Link
-                  className="text-green-600 font-bold hover:bg-green-50 px-2 py-1 rounded transition-colors"
-                  href="/register"
-                >
-                  Register
+            {/* Password */}
+            <div className="space-y-1">
+              <div className="flex justify-between items-center px-1">
+                <label className="text-sm font-semibold text-slate-700">Password</label>
+                <Link href="#" className="text-xs text-green-600 hover:underline font-medium">
+                  Forgot Password?
                 </Link>
-
+              </div>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
+                    errors.password ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-green-500 focus:ring-2 focus:ring-green-200"
+                  }`}
+                  {...register("password", { required: "Password is required" })}
+                />
                 <button
-                           
-                            className="btn bg-green-600 text-white font-bold no-underline hover:underline"
-                            onClick={handleGoogleSignin}
-                          >
-                            <FaGoogle />
-                            Continue with Google
-                          </button>
-              </p>
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                </button>
+              </div>
+              {errors.password && <p className="text-xs text-red-500 ml-1">{errors.password.message}</p>}
             </div>
+
+            <button
+              disabled={isLoading}
+              type="submit"
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg shadow-lg shadow-green-100 transition-all transform active:scale-[0.98] mt-2 disabled:opacity-70"
+            >
+              {isLoading ? "Signing in..." : "Sign In"}
+            </button>
           </form>
+
+          <p className="text-center mt-8 text-slate-600 text-sm">
+            Don't have an account?{" "}
+            <Link href="/register" className="text-green-600 font-bold hover:underline">
+              Register Account
+            </Link>
+          </p>
         </div>
       </div>
     </div>
