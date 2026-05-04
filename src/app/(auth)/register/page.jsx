@@ -11,7 +11,7 @@ import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-   const { data: session, isPending } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   const {
     register,
@@ -20,12 +20,12 @@ const RegisterPage = () => {
   } = useForm();
 
   if (session) {
-        redirect("/");
-    }
+    redirect("/");
+  }
   const handleGoogleSignin = async () => {
-     const data = await authClient.signIn.social({
-        provider: "google",
-      });
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
   };
   const handleRegistrationFunc = async (data) => {
     console.log("Form Data:", data);
@@ -151,46 +151,47 @@ const RegisterPage = () => {
               )}
             </div>
 
-            <div className="form-control w-full">
-              <div className="relative">
-                <label className="label flex justify-between">
-                  <span className="label-text font-medium text-slate-700">
-                    Password
-                  </span>
-
-                  <Link
-                    href="#"
-                    className="label-text-alt text-green-600 hover:underline font-medium"
-                  >
-                    Forgot?
-                  </Link>
+            <div className="space-y-1">
+              <div className="flex justify-between items-center px-1">
+                <label className="text-sm font-semibold text-slate-700">
+                  Password
                 </label>
+                <Link
+                  href="#"
+                  className="text-xs text-green-600 hover:underline font-medium"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
+              <div className="relative">
                 <input
-                  type={showPassword ? "text" : "password"} //
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className={`input input-bordered w-full focus:outline-green-500 transition-all ${
-                    errors.password ? "input-error" : "border-slate-200"
+                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
+                    errors.password
+                      ? "border-red-500 bg-red-50"
+                      : "border-slate-200 focus:border-green-500 focus:ring-2 focus:ring-green-200"
                   }`}
                   {...register("password", {
                     required: "Password is required",
                   })}
                 />
-
-                <span
+                <button
+                  type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute -left-2 top-1/2 text-slate-500 hover:text-green-600 transition-colors z-10"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
-                  {!showPassword ? (
-                    <FaEye size={20} />
+                  {showPassword ? (
+                    <FaEyeSlash size={18} />
                   ) : (
-                    <FaEyeSlash size={20} />
+                    <FaEye size={18} />
                   )}
-                </span>
+                </button>
               </div>
               {errors.password && (
-                <span className="text-xs text-red-500 mt-1 ml-1">
+                <p className="text-xs text-red-500 ml-1">
                   {errors.password.message}
-                </span>
+                </p>
               )}
             </div>
 
@@ -216,7 +217,6 @@ const RegisterPage = () => {
             </Link>
           </p>
           <button
-           
             className="btn bg-green-600 text-white font-bold no-underline hover:underline"
             onClick={handleGoogleSignin}
           >
