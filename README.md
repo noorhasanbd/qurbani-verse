@@ -37,9 +37,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 Hi! This is my assignment project for Category-A8-Pineapple. I tried my best to make a website where people can look for cows and goats for Qurbani. It’s a React-based single-page application.
 
 Links
-Live Site: [Insert Your Vercel/Render Link Here]
+Live Site: [[Insert Your Vercel/Render Link Here]](https://qurbani-verse.vercel.app/)
 
-GitHub Repo: [Insert Your Repo Link Here]
+
 
 What is this?
 Basically, QurbaniHat is like an online marketplace. If you need a cow or a goat, you can browse the list, see how much they weigh and how much they cost, and "book" them. I used a JSON file to store the animal data for now.
